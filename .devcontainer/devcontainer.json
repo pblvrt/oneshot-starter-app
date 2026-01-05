@@ -3,9 +3,6 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
-  "features": {
-    "ghcr.io/oven-sh/bun:1": {}
-  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -36,6 +33,6 @@
       "label": "Email (Inbucket)"
     }
   },
-  "postCreateCommand": "cp .env.local.example .env.local 2>/dev/null || true && bun install",
-  "postStartCommand": "sleep 10 && bun run dev"
+  "postCreateCommand": "cp .env.local.example .env.local 2>/dev/null || true && npm install",
+  "postStartCommand": "sleep 10 && npm run dev"
 }

@@ -55,7 +55,7 @@ If you prefer local development:
 - **Authentication**: Supabase Auth
 - **UI**: [shadcn/ui](https://ui.shadcn.com/) with Tailwind CSS
 - **AI**: OpenRouter integration for chat functionality
-- **Package Manager**: [Bun](https://bun.sh/) for fast installs and runs
+- **Package Manager**: npm (Codespaces) / [Bun](https://bun.sh/) (local)
 - **TypeScript**: Full type safety throughout
 
 ## 📁 Project Structure
