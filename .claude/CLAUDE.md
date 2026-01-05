@@ -4,9 +4,10 @@
 This is a Next.js starter template with:
 - **Next.js 15** with App Router and TypeScript
 - **Tailwind CSS v4** for styling
-- **shadcn/ui** for UI components
+- **shadcn/ui** for UI components (all components pre-installed)
 - **Supabase** for authentication and database
 - **OpenRouter** for AI/LLM integration
+- **DevContainer** for CodeSandbox with local Supabase
 
 ## Project Structure
 
@@ -18,7 +19,7 @@ src/
 │   │   └── callback/       # OAuth callback handler
 │   └── page.tsx            # Home page
 ├── components/
-│   └── ui/                 # shadcn/ui components
+│   └── ui/                 # shadcn/ui components (50+ components)
 └── lib/
     ├── ai/                 # OpenRouter AI configuration
     │   ├── openrouter.ts   # Client and model definitions
@@ -34,9 +35,44 @@ src/
 
 ## Getting Started
 
+### Option 1: CodeSandbox / DevContainer (Recommended)
+
+Open this project in CodeSandbox - it will automatically:
+1. Start the devcontainer with Node.js 20
+2. Spin up local Supabase (Postgres, Auth, REST API, Studio)
+3. Install dependencies and start the dev server
+
+**Local Supabase URLs:**
+- App: `http://localhost:3000`
+- Supabase API: `http://localhost:8000`
+- Supabase Studio: `http://localhost:3002`
+- Inbucket (email testing): `http://localhost:9000`
+
+### Option 2: Manual Setup
+
 1. Copy `.env.local.example` to `.env.local` and add your credentials
 2. Run `npm install` to install dependencies
 3. Run `npm run dev` to start the development server
+
+## DevContainer Services
+
+The devcontainer includes a full Supabase stack:
+
+| Service | Port | Description |
+|---------|------|-------------|
+| App | 3000 | Next.js dev server |
+| Kong | 8000 | Supabase API gateway |
+| Studio | 3002 | Supabase dashboard |
+| Postgres | 5432 | Database |
+| Auth | 9999 | GoTrue auth service |
+| Inbucket | 9000 | Email testing UI |
+
+**Default credentials (local only):**
+```
+Anon Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
+Service Role: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
+DB Password: postgres
+```
 
 ## OpenRouter AI Setup
 
@@ -84,7 +120,7 @@ POST to `/api/chat` with:
 }
 ```
 
-## Supabase Setup
+## Supabase Setup (Production)
 
 1. Create a project at https://supabase.com
 2. Get your project URL and anon key from Settings > API
@@ -99,13 +135,18 @@ POST to `/api/chat` with:
 - `resetPassword(email)` - Send password reset email
 - `updatePassword(password)` - Update user password
 
-## Adding shadcn Components
+## shadcn/ui Components
 
-```bash
-npx shadcn@latest add button
-npx shadcn@latest add card
-npx shadcn@latest add input
-# etc.
+All 50+ shadcn/ui components are pre-installed:
+
+```
+accordion, alert, alert-dialog, aspect-ratio, avatar, badge, breadcrumb,
+button, button-group, calendar, card, carousel, chart, checkbox, collapsible,
+command, context-menu, dialog, drawer, dropdown-menu, empty, field, form,
+hover-card, input, input-group, input-otp, item, kbd, label, menubar,
+navigation-menu, pagination, popover, progress, radio-group, resizable,
+scroll-area, select, separator, sheet, sidebar, skeleton, slider, sonner,
+spinner, switch, table, tabs, textarea, toggle, toggle-group, tooltip
 ```
 
 ## MCP Servers
