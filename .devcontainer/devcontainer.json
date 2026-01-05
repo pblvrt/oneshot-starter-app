@@ -4,19 +4,38 @@
   "service": "app",
   "workspaceFolder": "/workspace",
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
-    }
+    "ghcr.io/oven-sh/bun:1": {}
   },
   "customizations": {
     "vscode": {
       "extensions": [
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "bradlc.vscode-tailwindcss"
-      ]
+        "bradlc.vscode-tailwindcss",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      }
     }
   },
-  "postCreateCommand": "npm install",
-  "postStartCommand": "npm run dev"
+  "forwardPorts": [3000, 8000, 3002, 9000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js App",
+      "onAutoForward": "openBrowser"
+    },
+    "8000": {
+      "label": "Supabase API"
+    },
+    "3002": {
+      "label": "Supabase Studio"
+    },
+    "9000": {
+      "label": "Email (Inbucket)"
+    }
+  },
+  "postCreateCommand": "cp .env.local.example .env.local 2>/dev/null || true && bun install",
+  "postStartCommand": "sleep 10 && bun run dev"
 }

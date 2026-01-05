@@ -1,20 +1,25 @@
-version: "3.8"
-
 services:
   app:
     image: mcr.microsoft.com/devcontainers/javascript-node:20
     volumes:
       - ..:/workspace:cached
     command: sleep infinity
+    ports:
+      - "3000:3000"
     depends_on:
-      - supabase-db
-      - supabase-auth
-      - supabase-rest
-      - supabase-studio
+      supabase-kong:
+        condition: service_healthy
+      supabase-studio:
+        condition: service_started
     environment:
+      # Server-side URL (Docker internal)
+      - SUPABASE_URL=http://supabase-kong:8000
+      # Client-side URL (browser access via port forwarding)
       - NEXT_PUBLIC_SUPABASE_URL=http://localhost:8000
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0
       - SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   supabase-db:
     image: supabase/postgres:15.6.1.143
@@ -30,6 +35,7 @@ services:
       JWT_EXP: 3600
     volumes:
       - supabase-db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: pg_isready -U postgres -h localhost
       interval: 5s
@@ -89,8 +95,10 @@ services:
       - "8000:8000"
       - "8443:8443"
     depends_on:
-      - supabase-auth
-      - supabase-rest
+      supabase-auth:
+        condition: service_started
+      supabase-rest:
+        condition: service_started
     environment:
       KONG_DATABASE: "off"
       KONG_DECLARATIVE_CONFIG: /var/lib/kong/kong.yml
@@ -100,6 +108,11 @@ services:
       KONG_NGINX_PROXY_PROXY_BUFFERS: 64 160k
     volumes:
       - ./kong.yml:/var/lib/kong/kong.yml:ro
+    healthcheck:
+      test: ["CMD", "kong", "health"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
 
   supabase-studio:
     image: supabase/studio:20241202-71e5240
