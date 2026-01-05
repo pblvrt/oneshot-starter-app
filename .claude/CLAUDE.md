@@ -6,18 +6,24 @@ This is a Next.js starter template with:
 - **Tailwind CSS v4** for styling
 - **shadcn/ui** for UI components
 - **Supabase** for authentication and database
+- **OpenRouter** for AI/LLM integration
 
 ## Project Structure
 
 ```
 src/
 ├── app/                    # Next.js App Router pages
+│   ├── api/chat/           # Streaming chat API endpoint
 │   ├── auth/
 │   │   └── callback/       # OAuth callback handler
 │   └── page.tsx            # Home page
 ├── components/
 │   └── ui/                 # shadcn/ui components
 └── lib/
+    ├── ai/                 # OpenRouter AI configuration
+    │   ├── openrouter.ts   # Client and model definitions
+    │   ├── chat.ts         # Chat helper functions
+    │   └── index.ts        # Exports
     ├── supabase/           # Supabase configuration
     │   ├── client.ts       # Browser client
     │   ├── server.ts       # Server client
@@ -28,9 +34,55 @@ src/
 
 ## Getting Started
 
-1. Copy `.env.local.example` to `.env.local` and add your Supabase credentials
+1. Copy `.env.local.example` to `.env.local` and add your credentials
 2. Run `npm install` to install dependencies
 3. Run `npm run dev` to start the development server
+
+## OpenRouter AI Setup
+
+1. Get an API key from https://openrouter.ai/keys
+2. Add `OPENROUTER_API_KEY` to `.env.local`
+
+### AI Functions Available
+
+```typescript
+import { chat, chatStream, generate, models } from "@/lib/ai";
+
+// Simple generation
+const response = await generate("Write a haiku about coding");
+
+// Chat with messages
+const response = await chat([
+  { role: "system", content: "You are a helpful assistant" },
+  { role: "user", content: "Hello!" }
+]);
+
+// Streaming chat
+const stream = await chatStream(messages);
+for await (const chunk of stream) {
+  console.log(chunk.choices[0]?.delta?.content);
+}
+
+// Use different models
+const response = await chat(messages, { model: models.gpt4o });
+```
+
+### Available Models
+
+- `models.claude4Opus` / `models.claude4Sonnet` / `models.claudeHaiku`
+- `models.gpt4o` / `models.gpt4oMini` / `models.o1`
+- `models.gemini2Flash` / `models.geminiPro`
+- `models.llama33` / `models.deepseekChat` / `models.qwen25`
+
+### Chat API Endpoint
+
+POST to `/api/chat` with:
+```json
+{
+  "messages": [{ "role": "user", "content": "Hello" }],
+  "model": "anthropic/claude-sonnet-4" // optional
+}
+```
 
 ## Supabase Setup
 
