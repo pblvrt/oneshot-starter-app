@@ -13,6 +13,7 @@ services:
   pocketbase:
     image: ghcr.io/muchobien/pocketbase:latest
     restart: unless-stopped
+    command: serve --http=0.0.0.0:8090 --origins=*
     ports:
       - "8090:8090"
     volumes:
