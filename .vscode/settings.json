@@ -1,0 +1,90 @@
+{
+  // Clean, distraction-free UI for vibecoders
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.startupEditor": "none",
+  "workbench.tips.enabled": false,
+  "workbench.statusBar.visible": true,
+  "workbench.activityBar.location": "top",
+  "workbench.layoutControl.enabled": false,
+  "workbench.editor.showTabs": "single",
+
+  // Larger, readable text
+  "editor.fontSize": 15,
+  "editor.lineHeight": 1.6,
+  "editor.fontFamily": "'JetBrains Mono', 'Fira Code', Menlo, monospace",
+  "terminal.integrated.fontSize": 14,
+
+  // Hide complexity
+  "editor.minimap.enabled": false,
+  "editor.breadcrumbs.enabled": false,
+  "editor.renderLineHighlight": "gutter",
+  "editor.glyphMargin": false,
+  "editor.folding": false,
+  "editor.lineNumbers": "off",
+  "editor.scrollbar.vertical": "hidden",
+  "editor.scrollbar.horizontal": "hidden",
+  "editor.overviewRulerBorder": false,
+  "editor.hideCursorInOverviewRuler": true,
+
+  // Auto-save so work is never lost
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+
+  // Format automatically
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Simpler explorer
+  "explorer.compactFolders": false,
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.decorations.badges": false,
+
+  // Hide git noise
+  "git.decorations.enabled": false,
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "scm.diffDecorations": "none",
+
+  // Quiet notifications
+  "window.enableMenuBarMnemonics": false,
+
+  // Smooth experience
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.smoothScrolling": true,
+  "workbench.list.smoothScrolling": true,
+
+  // Helpful for beginners
+  "editor.suggest.showStatusBar": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+
+  // TypeScript/JavaScript
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
+  // Hide files vibecoders don't need to see
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/bun.lock": true,
+    "**/package-lock.json": true,
+    "**/.env.local": true,
+    "**/tsconfig.json": true,
+    "**/next.config.ts": true,
+    "**/postcss.config.mjs": true,
+    "**/eslint.config.mjs": true,
+    "**/components.json": true,
+    "**/next-env.d.ts": true,
+    "**/.devcontainer": true,
+    "**/.claude": true
+  }
+}
+
