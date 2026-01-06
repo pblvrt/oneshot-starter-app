@@ -1,5 +1,5 @@
 {
-  "name": "Next.js + Supabase Starter",
+  "name": "Next.js + PocketBase Starter",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
@@ -8,8 +8,7 @@
       "extensions": [
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "bradlc.vscode-tailwindcss",
-        "ms-azuretools.vscode-docker"
+        "bradlc.vscode-tailwindcss"
       ],
       "settings": {
         "editor.formatOnSave": true,
@@ -17,22 +16,17 @@
       }
     }
   },
-  "forwardPorts": [3000, 8000, 3002, 9000],
+  "forwardPorts": [3000, 8090],
   "portsAttributes": {
     "3000": {
       "label": "Next.js App",
       "onAutoForward": "openBrowser"
     },
-    "8000": {
-      "label": "Supabase API"
-    },
-    "3002": {
-      "label": "Supabase Studio"
-    },
-    "9000": {
-      "label": "Email (Inbucket)"
+    "8090": {
+      "label": "PocketBase Admin",
+      "onAutoForward": "notify"
     }
   },
   "postCreateCommand": "npm install",
-  "postStartCommand": ".devcontainer/setup.sh && sleep 5 && npm run dev"
+  "postStartCommand": ".devcontainer/setup.sh && npm run dev"
 }

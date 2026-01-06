@@ -18,7 +18,7 @@ import {
   signInWithEmail,
   signUpWithEmail,
   signInWithOAuth,
-} from "@/lib/supabase/auth";
+} from "@/lib/pocketbase";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -54,7 +54,9 @@ export default function LoginPage() {
     if (error) {
       setError(error.message);
     } else {
-      setMessage("Check your email for the confirmation link!");
+      setMessage("Account created successfully! You are now logged in.");
+      router.push("/");
+      router.refresh();
     }
     setLoading(false);
   };
@@ -68,6 +70,9 @@ export default function LoginPage() {
     if (error) {
       setError(error.message);
       setLoading(false);
+    } else {
+      router.push("/");
+      router.refresh();
     }
   };
 
@@ -139,7 +144,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    minLength={6}
+                    minLength={8}
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={loading}>
