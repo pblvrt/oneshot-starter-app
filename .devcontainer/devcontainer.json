@@ -33,6 +33,6 @@
       "label": "Email (Inbucket)"
     }
   },
-  "postCreateCommand": ".devcontainer/setup.sh && npm install",
-  "postStartCommand": "sleep 10 && npm run dev"
+  "postCreateCommand": "npm install",
+  "postStartCommand": ".devcontainer/setup.sh && sleep 5 && npm run dev"
 }
