@@ -33,6 +33,6 @@
       "label": "Email (Inbucket)"
     }
   },
-  "postCreateCommand": "cp .env.local.example .env.local 2>/dev/null || true && npm install",
+  "postCreateCommand": ".devcontainer/setup.sh && npm install",
   "postStartCommand": "sleep 10 && npm run dev"
 }
