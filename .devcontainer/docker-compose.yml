@@ -13,14 +13,15 @@ services:
   pocketbase:
     image: ghcr.io/muchobien/pocketbase:latest
     restart: unless-stopped
-    command: serve --http=0.0.0.0:8090 --origins=*
     ports:
       - "8090:8090"
     volumes:
       - pocketbase-data:/pb_data
     environment:
-      PB_ADMIN_EMAIL: ${PB_ADMIN_EMAIL:-admin@example.com}
-      PB_ADMIN_PASSWORD: ${PB_ADMIN_PASSWORD:-admin123456}
+      PB_HOST: 0.0.0.0
+      PB_PORT: 8090
+      PB_ADMIN_EMAIL: admin@oneshot.com
+      PB_ADMIN_PASSWORD: Oneshot123456
     healthcheck:
       test:
         [
@@ -31,10 +32,10 @@ services:
           "--spider",
           "http://localhost:8090/api/health",
         ]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
 volumes:
   pocketbase-data:

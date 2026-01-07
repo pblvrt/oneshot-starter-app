@@ -7,6 +7,33 @@
   "workbench.activityBar.location": "top",
   "workbench.layoutControl.enabled": false,
   "workbench.editor.showTabs": "single",
+  "workbench.sideBar.location": "right",
+  "workbench.editor.centeredLayoutAutoResize": false,
+  "workbench.panel.defaultLocation": "bottom",
+  "workbench.auxiliaryBar.location": "left",
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+
+  // Editor tab management
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 10,
+  "workbench.editor.limit.perEditorGroup": true,
+  "workbench.editor.pinnedTabSizing": "compact",
+  "workbench.editor.pinnedTabsOnSeparateRow": false,
+  "workbench.editor.autoLockGroups": {
+    "terminal": true,
+    "mainThreadWebview-simpleBrowser": true
+  },
+
+  // Chat and AI
+  "chat.editor.wordWrap": "on",
+
+  // Zen mode (Cmd+K Z for distraction-free coding)
+  "zenMode.hideActivityBar": false,
+  "zenMode.hideLineNumbers": false,
+  "zenMode.hideStatusBar": false,
+  "zenMode.centerLayout": true,
+  "zenMode.fullScreen": false,
+  "zenMode.restore": true,
 
   // Larger, readable text
   "editor.fontSize": 15,
@@ -87,4 +114,3 @@
     "**/.claude": false
   }
 }
-

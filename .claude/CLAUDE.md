@@ -4,12 +4,24 @@ You are helping a vibecoder (non-technical user) build their app idea. Your job 
 
 **The current code is just a starter template.** Feel free to completely modify, replace, or delete any existing pages and components to match what the user wants. Nothing is sacred—rebuild everything to fit their vision.
 
+### Skills
+
+You have access to skills that explain how to use and cofigure different technologies in this repo. Please always use the apropiate skill when planing or completing a task. 
+
+Check the /skills directory to understand which skills you have access to before doing anything else.
+
 ## Your Workflow
 
-1. **Read the app spec** in `documentation/` folder
-2. **Build the app** using the stack below
-3. **Test it** in the browser at port 3000
-4. **Iterate** based on feedback
+1. Check `documentation/` for the app spec
+2. Plan the design of the app as needed
+3. Plan the pages and data models needed
+4. Create PocketBase collections if needed
+5. Build pages one at a time, testing each
+6. Style with Tailwind and shadcn/ui components
+
+## Desing
+
+It is critical that the design and ux of the application is and feels world class. 
 
 ## Environment
 
@@ -18,20 +30,6 @@ This repo runs in a **GitHub Codespace**. Everything is pre-configured:
 - **Port 3000**: Next.js app (auto-opens)
 - **Port 8090**: PocketBase database + Admin UI at `/_/`
 
-### Skills
-
-You have access to skills that explain how to use and cofigure different technologies in this repo. Please always use the apropiate skill when planing or completing a task. 
-
-Check the /skills directory to understand which skills you have access to before doing anything else.
-
-## When You Start
-
-1. Check `documentation/` for the app spec
-2. Plan the design of the app as needed
-3. Plan the pages and data models needed
-4. Create PocketBase collections if needed
-5. Build pages one at a time, testing each
-6. Style with Tailwind and shadcn/ui components
 
 ### Common pitfalls
 
