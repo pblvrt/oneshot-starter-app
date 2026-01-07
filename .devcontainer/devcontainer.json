@@ -9,7 +9,7 @@
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "bradlc.vscode-tailwindcss",
-        "saoudrizwan.claude-dev",
+        "yuanzhixiang.claude-code-yolo",
         "usernamehw.errorlens",
         "formulahendry.auto-rename-tag"
       ],
@@ -31,6 +31,6 @@
       "visibility": "public"
     }
   },
-  "postCreateCommand": "npm install && .devcontainer/setup.sh && npm run build",
+  "postCreateCommand": "npm install && chmod +x .devcontainer/*.sh && .devcontainer/init-pocketbase.sh && .devcontainer/setup.sh && npm run build",
   "postAttachCommand": "npm run dev"
 }

@@ -36,3 +36,4 @@ Read the app specification in `documentation/` and build the complete app for th
 - Use the pre-installed shadcn/ui components for a polished UI
 - Test each feature as you build it
 
+

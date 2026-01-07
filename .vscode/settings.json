@@ -84,7 +84,7 @@
     "**/components.json": true,
     "**/next-env.d.ts": true,
     "**/.devcontainer": true,
-    "**/.claude": true
+    "**/.claude": false
   }
 }
 

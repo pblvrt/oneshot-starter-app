@@ -4,10 +4,7 @@
     "usernamehw.errorlens",
     "bradlc.vscode-tailwindcss",
     "formulahendry.auto-rename-tag",
-    "saoudrizwan.claude-dev"
+    "yuanzhixiang.claude-code-yolo"
   ],
-  "unwantedRecommendations": [
-    "ms-vscode.vscode-typescript-tslint-plugin"
-  ]
+  "unwantedRecommendations": ["ms-vscode.vscode-typescript-tslint-plugin"]
 }
-

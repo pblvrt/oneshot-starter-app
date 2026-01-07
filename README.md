@@ -21,6 +21,12 @@ The easiest way to get started is using GitHub Codespaces:
 
 Access the **PocketBase Admin UI** at port 8090 with path `/_/` to manage your database and users.
 
+**Default Admin Credentials** (auto-created in Codespaces):
+- Email: `admin@example.com`
+- Password: `admin123456`
+
+You can customize these by setting `PB_ADMIN_EMAIL` and `PB_ADMIN_PASSWORD` environment variables.
+
 ## 🖥️ Local Development
 
 If you prefer local development:
@@ -50,10 +56,17 @@ If you prefer local development:
 
 ### First-Time PocketBase Setup
 
-When you first access PocketBase Admin:
-1. Go to http://localhost:8090/_/
-2. Create an admin account
-3. The `users` collection is created automatically
+The admin user is auto-created with these credentials:
+- Email: `admin@example.com`  
+- Password: `admin123456`
+
+Access the admin UI at http://localhost:8090/_/
+
+To customize the admin credentials, create a `.env` file:
+```bash
+PB_ADMIN_EMAIL=your@email.com
+PB_ADMIN_PASSWORD=your_secure_password
+```
 
 ## 🛠️ Tech Stack
 
@@ -89,9 +102,13 @@ When you first access PocketBase Admin:
 
 ## 🔧 Environment Variables
 
-The template includes sensible defaults for development:
-
-- `NEXT_PUBLIC_POCKETBASE_URL`: PocketBase API URL (auto-configured in Codespaces)
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PB_ADMIN_EMAIL` | PocketBase admin email | `admin@example.com` |
+| `PB_ADMIN_PASSWORD` | PocketBase admin password | `admin123456` |
+| `NEXT_PUBLIC_POCKETBASE_URL` | PocketBase API URL (browser) | Auto-configured |
+| `POCKETBASE_URL` | PocketBase API URL (server) | `http://pocketbase:8090` |
+| `OPENROUTER_API_KEY` | OpenRouter API key for AI | Optional |
 
 ## 🎯 Features
 
