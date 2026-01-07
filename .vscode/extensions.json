@@ -3,7 +3,8 @@
     "esbenp.prettier-vscode",
     "usernamehw.errorlens",
     "bradlc.vscode-tailwindcss",
-    "formulahendry.auto-rename-tag"
+    "formulahendry.auto-rename-tag",
+    "saoudrizwan.claude-dev"
   ],
   "unwantedRecommendations": [
     "ms-vscode.vscode-typescript-tslint-plugin"

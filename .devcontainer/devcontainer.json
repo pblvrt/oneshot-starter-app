@@ -8,7 +8,10 @@
       "extensions": [
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "bradlc.vscode-tailwindcss"
+        "bradlc.vscode-tailwindcss",
+        "saoudrizwan.claude-dev",
+        "usernamehw.errorlens",
+        "formulahendry.auto-rename-tag"
       ],
       "settings": {
         "editor.formatOnSave": true,
@@ -20,7 +23,7 @@
   "portsAttributes": {
     "3000": {
       "label": "Next.js App",
-      "onAutoForward": "openBrowser"
+      "onAutoForward": "openPreview"
     },
     "8090": {
       "label": "PocketBase API",
@@ -28,6 +31,6 @@
       "visibility": "public"
     }
   },
-  "postCreateCommand": "npm install",
-  "postStartCommand": ".devcontainer/setup.sh && npm run dev"
+  "postCreateCommand": "npm install && .devcontainer/setup.sh && npm run build",
+  "postAttachCommand": "npm run dev"
 }
