@@ -10,8 +10,6 @@
   "workbench.sideBar.location": "right",
   "workbench.editor.centeredLayoutAutoResize": false,
   "workbench.panel.defaultLocation": "bottom",
-  "workbench.auxiliaryBar.location": "left",
-  "workbench.secondarySideBar.defaultVisibility": "hidden",
 
   // Editor tab management
   "workbench.editor.limit.enabled": true,

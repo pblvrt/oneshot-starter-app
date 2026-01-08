@@ -13,15 +13,16 @@ Check the /skills directory to understand which skills you have access to before
 ## Your Workflow
 
 1. Check `documentation/` for the app spec
-2. Plan the design of the app as needed
+2. Plan the design of the app as needed. Use the design skill and the frontend skill. 
 3. Plan the pages and data models needed
-4. Create PocketBase collections if needed
+4. Create PocketBase collections if needed. Please USE the pocketbase collection skill to do this properly
 5. Build pages one at a time, testing each
-6. Style with Tailwind and shadcn/ui components
+6. Style with Tailwind and shadcn/ui components. Use the shadcn skills. 
 
 ## Desing
 
 It is critical that the design and ux of the application is and feels world class. 
+Please elaborate landing pages in depth and use the motion skills always to create great motion animations when needed. 
 
 ## Environment
 
