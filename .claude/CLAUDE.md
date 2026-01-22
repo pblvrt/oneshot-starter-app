@@ -28,7 +28,7 @@ Please elaborate landing pages in depth and use the motion skills always to crea
 
 ## Environment
 
-This repo runs in a **GitHub Codespace** or **e2b sandbox**. Everything is pre-configured:
+This repo runs in an **e2b sandbox** or **local Docker environment**. Everything is pre-configured:
 
 - **Port 3000**: TanStack Start app (auto-opens)
 - **Port 8090**: PocketBase database + Admin UI at `/_/`
@@ -36,7 +36,7 @@ This repo runs in a **GitHub Codespace** or **e2b sandbox**. Everything is pre-c
 
 ### Common pitfalls
 
-We need to deploy pocketbase migrations without having to relly on the user.
+We need to deploy pocketbase migrations without having to rely on the user.
 
 Pocketbase is run inside a docker container, use the pocketbase api to run the migrations.
 
@@ -48,12 +48,10 @@ The `.devcontainer/setup.sh` generates two PocketBase URLs:
 
 | Variable                      | Value                               | Used By           |
 | ----------------------------- | ----------------------------------- | ----------------- |
-| `VITE_PUBLIC_POCKETBASE_URL`  | `https://{codespace}-8090.{domain}` | Browser           |
+| `VITE_PUBLIC_POCKETBASE_URL`  | `http://localhost:8090`             | Browser           |
 | `VITE_POCKETBASE_URL`         | `http://pocketbase:8090`            | Server (internal) |
 
-Browser can't reach Docker internal network, so it uses the public Codespace URL.
-
-Please make sure that when configuring port forwarding in the github codespace, the port is set to public.
+Browser can't reach Docker internal network, so it uses localhost for browser requests.
 
 ## Stack
 

@@ -1,31 +1,17 @@
 #!/bin/bash
 
-# Setup script for GitHub Codespaces
+# Setup script for local development
 # This script creates the .env.local file with the correct PocketBase URL
 
 set -e
 
 echo "=========================================="
-echo "🔧 Running Codespaces Setup Script"
+echo "🔧 Running Setup Script"
 echo "=========================================="
 
-echo "CODESPACE_NAME: ${CODESPACE_NAME:-not set}"
-echo "GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN: ${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN:-not set}"
-
-# Check if we're in GitHub Codespaces
-if [ -n "$CODESPACE_NAME" ] && [ -n "$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN" ]; then
-    echo ""
-    echo "🚀 Detected GitHub Codespaces environment"
-
-    # Construct the Codespaces forwarded URL for port 8090 (PocketBase)
-    POCKETBASE_URL="https://${CODESPACE_NAME}-8090.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
-
-    echo "📝 Setting VITE_PUBLIC_POCKETBASE_URL to: $POCKETBASE_URL"
-else
-    echo ""
-    echo "💻 Local development environment detected"
-    POCKETBASE_URL="http://localhost:8090"
-fi
+echo ""
+echo "💻 Setting up local development environment"
+POCKETBASE_URL="http://localhost:8090"
 
 # Always recreate .env.local file
 echo ""

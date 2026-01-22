@@ -1,35 +1,8 @@
-# Next.js + PocketBase Starter Template
+# TanStack Start + PocketBase Starter Template
 
-A modern Next.js application with PocketBase for authentication, database, and file storage. This template is designed to work seamlessly with GitHub Codespaces for instant development environments.
-
-## 🚀 Quick Start with GitHub Codespaces
-
-The easiest way to get started is using GitHub Codespaces:
-
-1. Click the **"Use this template"** button on GitHub
-2. Create your repository
-3. Click **"Create codespace on main"**
-4. Wait for the environment to set up (~30 seconds)
-5. The application will automatically open in your browser
-
-### Available Services in Codespaces
-
-| Service | Port | Description |
-|---------|------|-------------|
-| Next.js App | 3000 | Your application |
-| PocketBase | 8090 | Database, Auth & Admin UI |
-
-Access the **PocketBase Admin UI** at port 8090 with path `/_/` to manage your database and users.
-
-**Default Admin Credentials** (auto-created in Codespaces):
-- Email: `admin@example.com`
-- Password: `admin123456`
-
-You can customize these by setting `PB_ADMIN_EMAIL` and `PB_ADMIN_PASSWORD` environment variables.
+A modern TanStack Start application with PocketBase for authentication, database, and file storage.
 
 ## 🖥️ Local Development
-
-If you prefer local development:
 
 ### Prerequisites
 - [Bun](https://bun.sh) (recommended) or Node.js 20+
@@ -54,10 +27,17 @@ If you prefer local development:
 5. Open http://localhost:3000 in your browser
 6. Access PocketBase Admin at http://localhost:8090/_/
 
-### First-Time PocketBase Setup
+### Available Services
+
+| Service | Port | Description |
+|---------|------|-------------|
+| TanStack Start App | 3000 | Your application |
+| PocketBase | 8090 | Database, Auth & Admin UI |
+
+### Default Admin Credentials
 
 The admin user is auto-created with these credentials:
-- Email: `admin@example.com`  
+- Email: `admin@example.com`
 - Password: `admin123456`
 
 Access the admin UI at http://localhost:8090/_/
@@ -70,34 +50,35 @@ PB_ADMIN_PASSWORD=your_secure_password
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Next.js 16](https://nextjs.org/) with App Router
+- **Framework**: [TanStack Start](https://tanstack.com/start) with TanStack Router
 - **Backend**: [PocketBase](https://pocketbase.io/) (SQLite-based)
 - **Authentication**: PocketBase Auth (email/password + OAuth)
 - **UI**: [shadcn/ui](https://ui.shadcn.com/) with Tailwind CSS
 - **AI**: OpenRouter integration for chat functionality
-- **Package Manager**: npm (Codespaces) / [Bun](https://bun.sh/) (local)
+- **Package Manager**: [Bun](https://bun.sh/)
 - **TypeScript**: Full type safety throughout
 
 ## 📁 Project Structure
 
 ```
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── api/               # API routes
-│   │   ├── auth/              # Authentication pages
-│   │   ├── login/             # Login/signup page
-│   │   └── page.tsx           # Home page
-│   ├── components/            # React components
-│   │   └── ui/                # shadcn/ui components
-│   ├── hooks/                 # Custom React hooks
-│   └── lib/                   # Utility libraries
-│       ├── ai/                # AI/OpenRouter integration
-│       └── pocketbase/        # PocketBase client & auth
-├── .devcontainer/             # Codespaces configuration
-│   ├── docker-compose.yml     # PocketBase service
-│   ├── devcontainer.json      # VS Code configuration
-│   └── setup.sh               # Environment setup
-└── public/                    # Static assets
+│   ├── routes/                # TanStack Router file-based routes
+│   │   ├── __root.tsx        # Root layout
+│   │   ├── index.tsx         # Home page (/)
+│   │   └── login.tsx         # Login page (/login)
+│   ├── components/           # React components
+│   │   └── ui/               # shadcn/ui components
+│   ├── lib/                  # Utility libraries
+│   │   ├── ai/               # AI/OpenRouter integration
+│   │   └── pocketbase/       # PocketBase client & auth
+│   ├── styles/
+│   │   └── app.css           # Global styles (Tailwind)
+│   ├── router.tsx            # Router configuration
+│   └── routeTree.gen.ts      # Auto-generated route tree
+├── .devcontainer/            # Docker configuration
+│   ├── docker-compose.yml    # PocketBase service
+│   └── setup.sh              # Environment setup
+└── public/                   # Static assets
 ```
 
 ## 🔧 Environment Variables
@@ -106,20 +87,19 @@ PB_ADMIN_PASSWORD=your_secure_password
 |----------|-------------|---------|
 | `PB_ADMIN_EMAIL` | PocketBase admin email | `admin@example.com` |
 | `PB_ADMIN_PASSWORD` | PocketBase admin password | `admin123456` |
-| `NEXT_PUBLIC_POCKETBASE_URL` | PocketBase API URL (browser) | Auto-configured |
-| `POCKETBASE_URL` | PocketBase API URL (server) | `http://pocketbase:8090` |
+| `VITE_PUBLIC_POCKETBASE_URL` | PocketBase API URL (browser) | `http://localhost:8090` |
+| `VITE_POCKETBASE_URL` | PocketBase API URL (server) | `http://pocketbase:8090` |
 | `OPENROUTER_API_KEY` | OpenRouter API key for AI | Optional |
 
 ## 🎯 Features
 
-- ✅ **Authentication**: Sign up/sign in with email & password
-- ✅ **OAuth**: GitHub, Google, Discord (configure in PocketBase Admin)
-- ✅ **Database**: SQLite with PocketBase collections
-- ✅ **Admin UI**: Built-in at `/_/` for database management
-- ✅ **AI Chat**: OpenRouter integration for conversational AI
-- ✅ **Modern UI**: Clean, accessible interface with shadcn/ui
-- ✅ **Type Safety**: Full TypeScript support
-- ✅ **Codespaces Ready**: One-click development environment
+- **Authentication**: Sign up/sign in with email & password
+- **OAuth**: GitHub, Google, Discord (configure in PocketBase Admin)
+- **Database**: SQLite with PocketBase collections
+- **Admin UI**: Built-in at `/_/` for database management
+- **AI Chat**: OpenRouter integration for conversational AI
+- **Modern UI**: Clean, accessible interface with shadcn/ui
+- **Type Safety**: Full TypeScript support
 
 ## 📚 Available Scripts
 
@@ -141,16 +121,17 @@ To enable OAuth login (GitHub, Google, Discord):
 
 ## 📖 Learn More
 
-- [Next.js Documentation](https://nextjs.org/docs)
+- [TanStack Start Documentation](https://tanstack.com/start/latest)
+- [TanStack Router Documentation](https://tanstack.com/router/latest)
 - [PocketBase Documentation](https://pocketbase.io/docs/)
 - [shadcn/ui Components](https://ui.shadcn.com/)
 
 ## 🚀 Deploy
 
 ### Vercel + PocketBase Cloud
-1. Deploy Next.js to [Vercel](https://vercel.com)
+1. Deploy TanStack Start to [Vercel](https://vercel.com)
 2. Host PocketBase on [PocketHost](https://pockethost.io/) or your own server
-3. Update `NEXT_PUBLIC_POCKETBASE_URL` in Vercel environment variables
+3. Update `VITE_PUBLIC_POCKETBASE_URL` in Vercel environment variables
 
 ### Self-Hosted
-Both Next.js and PocketBase can be self-hosted on any VPS or container platform.
+Both TanStack Start and PocketBase can be self-hosted on any VPS or container platform.
