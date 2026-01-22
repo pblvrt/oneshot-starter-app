@@ -4,27 +4,45 @@
 
 Collections are the fundamental data structures in PocketBase, similar to tables in a relational database. They define the schema and behavior of your data.
 
+## Version Notice
+
+> **Important**: PocketBase v0.23+ introduced breaking changes to the Collections API.
+>
+> | Feature              | v0.22 and earlier                | v0.23+                                            |
+> | -------------------- | -------------------------------- | ------------------------------------------------- |
+> | Field definition key | `schema`                         | `fields`                                          |
+> | Field options        | Nested in `options` object       | Flat at field level                               |
+> | Admin auth endpoint  | `/api/admins/auth-with-password` | `/api/collections/_superusers/auth-with-password` |
+>
+> This document shows the **v0.23+ format** (current). For programmatic creation, see [Creating Collections via API](creating_collections_api.md).
+
 ## Collection Types
 
 ### 1. Base Collection
+
 Flexible collection with custom schema. Used for:
+
 - Posts, articles, products
 - Comments, messages
 - Any application-specific data
 
 **Characteristics:**
+
 - No built-in authentication
 - Custom fields only
 - Full CRUD operations
 - Can be accessed via REST API
 
 ### 2. Auth Collection
+
 Special collection for user accounts. Used for:
+
 - User registration and login
 - User profiles and settings
 - Authentication workflows
 
 **Characteristics:**
+
 - Built-in auth fields (`email`, `password`, `emailVisibility`, `verified`)
 - Automatic user ID tracking on creation
 - OAuth2 support
@@ -33,13 +51,16 @@ Special collection for user accounts. Used for:
 - Password reset functionality
 
 ### 3. View Collection
+
 Read-only collection based on SQL views. Used for:
+
 - Complex joins and aggregations
 - Denormalized data for performance
 - Reporting and analytics
 - Dashboard metrics
 
 **Characteristics:**
+
 - Read-only (no create, update, delete)
 - Defined via SQL query
 - Auto-updates when source data changes
@@ -48,14 +69,50 @@ Read-only collection based on SQL views. Used for:
 ## Creating Collections
 
 ### Via Admin UI
+
 1. Navigate to Collections
 2. Click "New Collection"
 3. Choose collection type
 4. Configure name and schema
 5. Save
 
-### Via API
+### Via REST API (v0.23+)
+
+```http
+POST /api/collections
+Content-Type: application/json
+Authorization: {admin_token}
+
+{
+  "name": "products",
+  "type": "base",
+  "fields": [
+    {
+      "name": "name",
+      "type": "text",
+      "required": true,
+      "min": 1,
+      "max": 200
+    },
+    {
+      "name": "price",
+      "type": "number",
+      "required": true,
+      "min": 0
+    }
+  ],
+  "listRule": "",
+  "viewRule": "",
+  "createRule": "@request.auth.id != ''",
+  "updateRule": "@request.auth.id != ''",
+  "deleteRule": "@request.auth.id != ''"
+}
+```
+
+### Via JavaScript SDK
+
 ```javascript
+// Using the JS SDK (abstracts API version differences)
 const collection = await pb.collections.create({
   name: 'products',
   type: 'base',
@@ -74,59 +131,64 @@ const collection = await pb.collections.create({
 });
 ```
 
-## Schema Field Types
+## Field Types Reference
 
-### Text
+### Text Field
+
 Short to medium text strings.
 
 ```json
 {
   "name": "title",
   "type": "text",
-  "options": {
-    "min": null,
-    "max": null,
-    "pattern": ""
-  }
+  "required": true,
+  "min": 1,
+  "max": 200,
+  "pattern": ""
 }
 ```
 
-**Options:**
+**Properties:**
+
 - `min` - Minimum character length
 - `max` - Maximum character length
 - `pattern` - Regex pattern for validation
 
-### Number
+### Number Field
+
 Integer or decimal numbers.
 
 ```json
 {
   "name": "price",
   "type": "number",
-  "options": {
-    "min": null,
-    "max": null,
-    "noDecimal": false
-  }
+  "required": true,
+  "min": 0,
+  "max": 10000,
+  "noDecimal": false
 }
 ```
 
-**Options:**
+**Properties:**
+
 - `min` - Minimum value
 - `max` - Maximum value
-- `noDecimal` - Allow only integers
+- `noDecimal` - Allow only integers (true/false)
 
-### Email
+### Email Field
+
 Email addresses with validation.
 
 ```json
 {
   "name": "contact_email",
-  "type": "email"
+  "type": "email",
+  "required": true
 }
 ```
 
-### URL
+### URL Field
+
 URLs with validation.
 
 ```json
@@ -136,31 +198,33 @@ URLs with validation.
 }
 ```
 
-### Date
+### Date Field
+
 Date and time values.
 
 ```json
 {
   "name": "published_date",
   "type": "date",
-  "options": {
-    "min": "",
-    "max": ""
-  }
+  "min": "",
+  "max": ""
 }
 ```
 
-### Boolean
+### Boolean Field
+
 True/false values.
 
 ```json
 {
   "name": "is_published",
-  "type": "bool"
+  "type": "bool",
+  "required": true
 }
 ```
 
-### JSON
+### JSON Field
+
 Arbitrary JSON data.
 
 ```json
@@ -170,97 +234,151 @@ Arbitrary JSON data.
 }
 ```
 
-### Relation
+### Relation Field
+
 Links to records in other collections.
 
 ```json
 {
   "name": "author",
   "type": "relation",
-  "options": {
-    "collectionId": "AUTH_COLLECTION_ID",
-    "cascadeDelete": false,
-    "maxSelect": 1,
-    "displayFields": null
-  }
+  "collectionId": "pbc_1234567890",
+  "cascadeDelete": false,
+  "maxSelect": 1
 }
 ```
 
-**Options:**
-- `collectionId` - Target collection ID
-- `cascadeDelete` - Delete related records when this is deleted
-- `maxSelect` - Maximum number of related records (1 or null for unlimited)
-- `displayFields` - Fields to display when showing the relation
+**Properties:**
 
-### File
+- `collectionId` - Target collection **ID** (not name!) - looks like `pbc_1234567890`
+- `cascadeDelete` - Delete related records when this is deleted
+- `maxSelect` - Maximum number of related records (1 for single, null for unlimited)
+
+> **Important**: Relations require the actual collection ID, not the collection name. When creating collections programmatically, create the target collection first, then use its ID.
+
+### File Field
+
 File uploads and storage.
 
 ```json
 {
   "name": "avatar",
   "type": "file",
-  "options": {
-    "maxSelect": 1,
-    "maxSize": 5242880,
-    "mimeTypes": ["image/*"],
-    "thumbs": ["100x100", "300x300"]
-  }
+  "maxSelect": 1,
+  "maxSize": 5242880,
+  "mimeTypes": ["image/jpeg", "image/png", "image/webp"],
+  "thumbs": ["100x100", "300x300"]
 }
 ```
 
-**Options:**
+**Properties:**
+
 - `maxSelect` - Maximum number of files
-- `maxSize` - Maximum file size in bytes
-- `mimeTypes` - Allowed MIME types (array or ["*"] for all)
+- `maxSize` - Maximum file size in bytes (5242880 = 5MB)
+- `mimeTypes` - Allowed MIME types (use `["*"]` for all)
 - `thumbs` - Auto-generate image thumbnails at specified sizes
 
-### Select
+### Select Field
+
 Dropdown with predefined options.
 
 ```json
 {
   "name": "status",
   "type": "select",
-  "options": {
-    "values": ["draft", "published", "archived"],
-    "maxSelect": 1
-  }
+  "required": true,
+  "maxSelect": 1,
+  "values": ["draft", "published", "archived"]
 }
 ```
 
-**Options:**
+**Properties:**
+
 - `values` - Array of allowed values
 - `maxSelect` - Maximum selections (1 for single select, null for multi-select)
 
-### Autodate
+### Autodate Field
+
 Automatically populated dates.
 
 ```json
 {
   "name": "created",
   "type": "autodate",
-  "options": {
-    "onCreate": true,
-    "onUpdate": false
-  }
+  "onCreate": true,
+  "onUpdate": false
 }
 ```
 
-**Options:**
+**Properties:**
+
 - `onCreate` - Set on record creation
 - `onUpdate` - Update on record modification
 
-### Username
-Unique usernames (valid only for auth collections).
+## Complete Collection Example
+
+Here's a complete example of a blog posts collection:
 
 ```json
 {
-  "name": "username",
-  "type": "username",
-  "options": {
-    "min": 3,
-    "max": null
-  }
+  "name": "posts",
+  "type": "base",
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "required": true,
+      "min": 1,
+      "max": 200
+    },
+    {
+      "name": "slug",
+      "type": "text",
+      "required": true,
+      "min": 1,
+      "max": 200
+    },
+    {
+      "name": "content",
+      "type": "text",
+      "required": true
+    },
+    {
+      "name": "excerpt",
+      "type": "text",
+      "max": 500
+    },
+    {
+      "name": "category",
+      "type": "relation",
+      "collectionId": "pbc_categories_id",
+      "cascadeDelete": false,
+      "maxSelect": 1
+    },
+    {
+      "name": "status",
+      "type": "select",
+      "required": true,
+      "maxSelect": 1,
+      "values": ["draft", "published", "archived"]
+    },
+    {
+      "name": "published_date",
+      "type": "date"
+    },
+    {
+      "name": "featured_image",
+      "type": "file",
+      "maxSelect": 1,
+      "maxSize": 5242880,
+      "mimeTypes": ["image/jpeg", "image/png", "image/webp"]
+    }
+  ],
+  "listRule": "status = 'published'",
+  "viewRule": "status = 'published'",
+  "createRule": "@request.auth.id != ''",
+  "updateRule": "@request.auth.id != ''",
+  "deleteRule": "@request.auth.id != ''"
 }
 ```
 
@@ -276,77 +394,102 @@ Rules control who can access, create, update, and delete records.
 4. **Update Rule** - Who can modify records
 5. **Delete Rule** - Who can delete records
 
-### Rule Syntax
+### Rule Values
+
+| Value                       | Meaning                                        |
+| --------------------------- | ---------------------------------------------- |
+| `""` (empty string)         | Public access - anyone can perform this action |
+| `null`                      | Denied - only admins can perform this action   |
+| `"@request.auth.id != ''"`  | Authenticated users only                       |
+| `"user = @request.auth.id"` | Owner only (field `user` matches auth user)    |
+
+### Rule Syntax Examples
 
 **Authenticated Users Only**
+
 ```
-@request.auth.id != ""
+@request.auth.id != ''
 ```
 
 **Owner-Based Access**
+
 ```
-user_id = @request.auth.id
+user = @request.auth.id
 ```
 
 **Role-Based Access**
+
 ```
 @request.auth.role = 'admin'
 ```
 
 **Conditional Access**
+
 ```
-status = 'published' || @request.auth.id = author_id
+status = 'published' || @request.auth.id = author
 ```
 
 **Complex Conditions**
+
 ```
 @request.auth.role = 'moderator' && @request.auth.verified = true
 ```
 
 ### Special Variables
 
-- `@request.auth` - Current authenticated user
+- `@request.auth` - Current authenticated user record
 - `@request.auth.id` - User ID
 - `@request.auth.email` - User email
-- `@request.auth.role` - User role
 - `@request.auth.verified` - Email verification status
 
-### Rule Examples
+### Rule Examples by Use Case
 
 **Public Blog Posts**
-```
-List Rule: status = 'published'
-View Rule: status = 'published'
-Create Rule: @request.auth.id != ''
-Update Rule: author_id = @request.auth.id
-Delete Rule: author_id = @request.auth.id
+
+```json
+{
+  "listRule": "status = 'published'",
+  "viewRule": "status = 'published'",
+  "createRule": "@request.auth.id != ''",
+  "updateRule": "author = @request.auth.id",
+  "deleteRule": "author = @request.auth.id"
+}
 ```
 
 **Private User Data**
-```
-List Rule: user_id = @request.auth.id
-View Rule: user_id = @request.auth.id
-Create Rule: @request.auth.id != ''
-Update Rule: user_id = @request.auth.id
-Delete Rule: user_id = @request.auth.id
+
+```json
+{
+  "listRule": "user = @request.auth.id",
+  "viewRule": "user = @request.auth.id",
+  "createRule": "@request.auth.id != ''",
+  "updateRule": "user = @request.auth.id",
+  "deleteRule": "user = @request.auth.id"
+}
 ```
 
 **Admin-Only Content**
-```
-List Rule: @request.auth.role = 'admin'
-View Rule: @request.auth.role = 'admin'
-Create Rule: @request.auth.role = 'admin'
-Update Rule: @request.auth.role = 'admin'
-Delete Rule: @request.auth.role = 'admin'
+
+```json
+{
+  "listRule": null,
+  "viewRule": null,
+  "createRule": null,
+  "updateRule": null,
+  "deleteRule": null
+}
 ```
 
 **Moderated Comments**
-```
-List Rule: status = 'approved' || author_id = @request.auth.id
-View Rule: status = 'approved' || author_id = @request.auth.id
-Create Rule: @request.auth.id != ''
-Update Rule: author_id = @request.auth.id
-Delete Rule: author_id = @request.auth.id || @request.auth.role = 'moderator'
+
+```json
+{
+  "listRule": "is_approved = true || author = @request.auth.id",
+  "viewRule": "is_approved = true || author = @request.auth.id",
+  "createRule": "@request.auth.id != ''",
+  "updateRule": "author = @request.auth.id",
+  "deleteRule": "author = @request.auth.id"
+}
 ```
 
 ## Collection Indexes
@@ -356,6 +499,7 @@ Indexes improve query performance on frequently searched or sorted fields.
 ### Creating Indexes
 
 **Via Admin UI**
+
 1. Go to collection settings
 2. Click "Indexes" tab
 3. Click "New Index"
@@ -363,182 +507,188 @@ Indexes improve query performance on frequently searched or sorted fields.
 5. Save
 
 **Via API**
-```javascript
-await pb.collections.update('COLLECTION_ID', {
-  indexes: [
-    'CREATE INDEX idx_posts_status ON posts(status)',
-    'CREATE INDEX idx_posts_author ON posts(author_id)',
-    'CREATE INDEX idx_posts_created ON posts(created)'
+
+```json
+{
+  "indexes": [
+    "CREATE INDEX idx_posts_status ON posts(status)",
+    "CREATE INDEX idx_posts_created ON posts(created)"
   ]
-});
+}
 ```
 
 ### Index Best Practices
 
 1. **Index fields used in filters**
+
    ```sql
    CREATE INDEX idx_posts_status ON posts(status)
    ```
 
 2. **Index fields used in sorts**
+
    ```sql
    CREATE INDEX idx_posts_created ON posts(created)
    ```
 
 3. **Index foreign keys (relations)**
+
    ```sql
-   CREATE INDEX idx_comments_post ON comments(post_id)
+   CREATE INDEX idx_comments_post ON comments(post)
    ```
 
 4. **Composite indexes for multi-field queries**
+
    ```sql
    CREATE INDEX idx_posts_status_created ON posts(status, created)
    ```
 
 5. **Don't over-index** - Each index adds overhead to writes
 
-## Collection Options
-
-### General Options
-
-- **Name** - Collection identifier (used in API endpoints)
-- **Type** - base, auth, or view
-- **System collection** - Built-in collections (users, _pb_users_auth_)
-- **List encryption** - Encrypt data in list views
-
-### API Options
-
-- **API keys** - Manage read/write API keys
-- **CRUD endpoints** - Enable/disable specific endpoints
-- **File access** - Configure public/private file access
-
-### Auth Collection Options
-
-- **Min password length** - Minimum password requirements
-- **Password constraints** - Require uppercase, numbers, symbols
-- **Email verification** - Require email confirmation
-- **OAuth2 providers** - Configure social login
-
 ## Managing Collections
 
 ### List Collections
+
 ```javascript
 const collections = await pb.collections.getList(1, 50);
 ```
 
 ### Get Collection
+
 ```javascript
-const collection = await pb.collections.getOne('COLLECTION_ID');
+const collection = await pb.collections.getOne('posts');
+// or by ID
+const collection = await pb.collections.getOne('pbc_1234567890');
 ```
 
 ### Update Collection
+
 ```javascript
-const updated = await pb.collections.update('COLLECTION_ID', {
-  name: 'new_name',
-  schema: [
-    // updated schema
-  ]
+const updated = await pb.collections.update('posts', {
+  listRule: "status = 'published'"
 });
 ```
 
 ### Delete Collection
-```javascript
-await pb.collections.delete('COLLECTION_ID');
-```
 
-### Export Collection Schema
 ```javascript
-const collection = await pb.collections.getOne('COLLECTION_ID');
-const schemaJSON = JSON.stringify(collection.schema, null, 2);
+await pb.collections.delete('posts');
 ```
 
 ## Best Practices
 
 1. **Plan Schema Carefully**
+
    - Design before implementing
    - Consider future needs
    - Use appropriate field types
 
-2. **Use Relations Wisely**
+2. **Create Collections in Order**
+
+   - Create collections without relations first
+   - Then create collections that reference them
+   - This ensures relation IDs are available
+
+3. **Use Relations Wisely**
+
    - Normalize data appropriately
    - Set cascadeDelete when appropriate
-   - Consider performance impact
+   - Remember: relations need collection **IDs**, not names
 
-3. **Set Rules Early**
+4. **Set Rules Early**
+
    - Security from the start
    - Test rules thoroughly
-   - Document rule logic
+   - Use empty string `""` for public, `null` for admin-only
 
-4. **Index Strategically**
+5. **Index Strategically**
+
    - Profile slow queries
    - Index commonly filtered fields
    - Avoid over-indexing
 
-5. **Use Auth Collections for Users**
+6. **Use Auth Collections for Users**
    - Built-in auth features
    - OAuth2 support
    - Password management
 
-6. **Use Views for Complex Queries**
-   - Improve performance
-   - Simplify frontend code
-   - Pre-compute expensive joins
-
 ## Common Patterns
 
 ### Blog/Post System
+
 ```
-Collections:
-- posts (base) - title, content, author, status, published_date
-- categories (base) - name, slug, description
-- tags (base) - name, slug
-- posts_tags (base) - post_id, tag_id (relation join)
+Collections (create in order):
+1. categories (base) - name, slug, description
+2. posts (base) - title, content, category (relation), status, published_date
+3. comments (base) - post (relation), author (relation), content
 ```
 
 ### E-commerce
+
 ```
-Collections:
-- products (base) - name, price, description, category, stock
-- orders (base) - user, items, total, status
-- order_items (base) - order, product, quantity, price
-- categories (base) - name, parent (self-relation)
+Collections (create in order):
+1. categories (base) - name, parent (self-relation)
+2. products (base) - name, price, description, category (relation), stock
+3. orders (base) - user (relation), items (json), total, status
 ```
 
 ### Social Network
+
 ```
-Collections:
-- posts (base) - author, content, media, created, visibility
-- likes (base) - post, user (unique constraint)
-- follows (base) - follower, following (unique constraint)
-- users (auth) - built-in auth + profile fields
+Collections (create in order):
+1. users (auth) - built-in auth + profile fields
+2. posts (base) - author (relation), content, media
+3. likes (base) - post (relation), user (relation)
+4. follows (base) - follower (relation), following (relation)
 ```
 
 ## Troubleshooting
 
+**Fields not being created (schema ignored)**
+
+- For v0.23+: Use `fields` not `schema`
+- For v0.23+: Put options flat at field level, not nested in `options`
+- Run with `DEBUG=1` to see the actual payload being sent
+
+**Relation field failing with "collectionId cannot be blank"**
+
+- Relations require the actual collection ID (e.g., `pbc_1234567890`)
+- Create the target collection first, get its ID, then create the relation
+- See [Creating Collections via API](creating_collections_api.md) for details
+
+**Select field failing with "values cannot be blank"**
+
+- For v0.23+: Put `values` at field level, not inside `options`
+
 **Collection not showing data**
+
 - Check listRule
 - Verify user permissions
 - Check if view collection is properly configured
 
 **Slow queries**
+
 - Add database indexes
 - Optimize rule conditions
 - Use views for complex joins
 
 **Can't create records**
+
 - Check createRule
 - Verify required fields
 - Ensure user is authenticated
 
 **File uploads failing**
+
 - Check maxSize and mimeTypes
-- Verify file field options
+- Verify file field configuration
 - Check user has create permissions
 
 ## Related Topics
 
+- [Creating Collections via API](creating_collections_api.md) - Programmatic collection creation
 - [Authentication](authentication.md) - User management
 - [API Rules & Filters](api_rules_filters.md) - Security rules syntax
 - [Working with Relations](working_with_relations.md) - Field relationships
 - [Files Handling](files_handling.md) - File uploads and storage
-- [Schema Templates](../templates/schema_templates.md) - Pre-built schemas
+- [Schema Templates](../schema_templates.md) - Pre-built schemas

@@ -454,3 +454,4 @@ if (process.env.DEBUG) {
 - [Schema Templates](../schema_templates.md) - Pre-built collection schemas
 - [Collections API Reference](../api/api_collections.md) - Full API documentation
 
+

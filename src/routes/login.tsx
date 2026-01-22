@@ -1,7 +1,5 @@
-"use client";
-
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -20,8 +18,12 @@ import {
   signInWithOAuth,
 } from "@/lib/pocketbase";
 
-export default function LoginPage() {
-  const router = useRouter();
+export const Route = createFileRoute("/login")({
+  component: LoginPage,
+});
+
+function LoginPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,8 +40,7 @@ export default function LoginPage() {
     if (error) {
       setError(error.message);
     } else {
-      router.push("/");
-      router.refresh();
+      navigate({ to: "/" });
     }
     setLoading(false);
   };
@@ -55,8 +56,7 @@ export default function LoginPage() {
       setError(error.message);
     } else {
       setMessage("Account created successfully! You are now logged in.");
-      router.push("/");
-      router.refresh();
+      navigate({ to: "/" });
     }
     setLoading(false);
   };
@@ -71,8 +71,7 @@ export default function LoginPage() {
       setError(error.message);
       setLoading(false);
     } else {
-      router.push("/");
-      router.refresh();
+      navigate({ to: "/" });
     }
   };
 
@@ -203,7 +202,7 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="justify-center">
           <Button variant="link" asChild>
-            <a href="/">Back to home</a>
+            <Link to="/">Back to home</Link>
           </Button>
         </CardFooter>
       </Card>

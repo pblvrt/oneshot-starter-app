@@ -5,12 +5,12 @@ let pb: PocketBase | null = null;
 export function createClient(): PocketBase {
   if (typeof window === "undefined") {
     // Server-side: always create a new instance
-    return new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL);
+    return new PocketBase(import.meta.env.VITE_PUBLIC_POCKETBASE_URL);
   }
 
   // Client-side: reuse the same instance
   if (!pb) {
-    pb = new PocketBase(process.env.NEXT_PUBLIC_POCKETBASE_URL);
+    pb = new PocketBase(import.meta.env.VITE_PUBLIC_POCKETBASE_URL);
 
     // Load auth from localStorage if available
     pb.authStore.loadFromCookie(document.cookie);
@@ -27,5 +27,3 @@ export function createClient(): PocketBase {
 export function getClient(): PocketBase {
   return createClient();
 }
-
-

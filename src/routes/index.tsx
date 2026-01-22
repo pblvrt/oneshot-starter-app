@@ -1,3 +1,4 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,13 +8,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default function Home() {
+export const Route = createFileRoute("/")({
+  component: Home,
+});
+
+function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-8">
       <main className="flex max-w-4xl flex-col items-center gap-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold tracking-tight">
-            Next.js + Supabase Starter
+            TanStack Start + PocketBase Starter
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
             A modern starter template with authentication ready to go
@@ -23,21 +28,21 @@ export default function Home() {
         <div className="grid gap-6 md:grid-cols-3">
           <Card>
             <CardHeader>
-              <CardTitle>Next.js 15</CardTitle>
+              <CardTitle>TanStack Start</CardTitle>
               <CardDescription>
-                App Router, Server Components, and Turbopack
+                Server rendering, streaming, and full-stack React
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Built on the latest Next.js with TypeScript support
+                Built on TanStack Router with Vite and TypeScript
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Supabase Auth</CardTitle>
+              <CardTitle>PocketBase Auth</CardTitle>
               <CardDescription>
                 Email, OAuth, and magic links
               </CardDescription>
@@ -66,7 +71,7 @@ export default function Home() {
 
         <div className="flex gap-4">
           <Button asChild>
-            <a href="/login">Get Started</a>
+            <Link to="/login">Get Started</Link>
           </Button>
           <Button variant="outline" asChild>
             <a

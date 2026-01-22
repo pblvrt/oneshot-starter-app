@@ -16,11 +16,11 @@ echo "GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN: ${GITHUB_CODESPACES_PORT_FORWARD
 if [ -n "$CODESPACE_NAME" ] && [ -n "$GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN" ]; then
     echo ""
     echo "🚀 Detected GitHub Codespaces environment"
-    
+
     # Construct the Codespaces forwarded URL for port 8090 (PocketBase)
     POCKETBASE_URL="https://${CODESPACE_NAME}-8090.${GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}"
-    
-    echo "📝 Setting NEXT_PUBLIC_POCKETBASE_URL to: $POCKETBASE_URL"
+
+    echo "📝 Setting VITE_PUBLIC_POCKETBASE_URL to: $POCKETBASE_URL"
 else
     echo ""
     echo "💻 Local development environment detected"
@@ -37,10 +37,10 @@ cat > .env.local << EOF
 # PocketBase Configuration
 
 # Client-side URL (browser requests)
-NEXT_PUBLIC_POCKETBASE_URL=${POCKETBASE_URL}
+VITE_PUBLIC_POCKETBASE_URL=${POCKETBASE_URL}
 
 # Server-side URL (for API routes running in container)
-POCKETBASE_URL=http://pocketbase:8090
+VITE_POCKETBASE_URL=http://pocketbase:8090
 EOF
 
 echo ""
