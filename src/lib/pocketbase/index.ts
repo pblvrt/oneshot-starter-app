@@ -11,3 +11,11 @@ export {
 } from "./auth";
 export type { AuthResult } from "./auth";
 
+// SSR-safe hooks for React components
+export {
+  usePocketBase,
+  useAuth,
+  usePocketBaseQuery,
+  usePocketBaseMutation,
+} from "./hooks";
+

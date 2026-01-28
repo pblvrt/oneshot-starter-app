@@ -123,3 +123,95 @@ export const myServerFn = createServerFn({ method: "POST" })
 // Use import.meta.env for Vite
 import.meta.env.VITE_PUBLIC_POCKETBASE_URL
 ```
+
+## Environment Variables (CRITICAL)
+
+This is a **Vite** project, NOT Next.js:
+- Use `VITE_PUBLIC_*` prefix for client-accessible variables (**NOT** `NEXT_PUBLIC_`)
+- Use `import.meta.env.VITE_PUBLIC_*` to access them (**NOT** `process.env`)
+
+| Variable | Usage | Example |
+|----------|-------|---------|
+| `VITE_PUBLIC_*` | Browser accessible | `import.meta.env.VITE_PUBLIC_POCKETBASE_URL` |
+| `VITE_*` | Server only | `import.meta.env.VITE_POCKETBASE_URL` |
+
+Common mistake: Using `NEXT_PUBLIC_POCKETBASE_URL` will NOT work. Always use `VITE_PUBLIC_`.
+
+## PocketBase with SSR (IMPORTANT)
+
+PocketBase auth store is **NOT available during SSR** because it relies on browser cookies. Always use the provided hooks:
+
+```tsx
+// WRONG - breaks on server, causes hydration errors
+const pb = getClient();
+if (!pb.authStore.isValid) { /* redirect */ }
+
+// CORRECT - SSR safe
+import { useAuth } from "@/lib/pocketbase/hooks";
+const { user, loading, pb } = useAuth();
+```
+
+### Available Hooks
+
+| Hook | Purpose |
+|------|---------|
+| `usePocketBase()` | Get SSR-safe PocketBase client |
+| `useAuth()` | Protected routes with auto-redirect |
+| `usePocketBaseQuery()` | SSR-safe data fetching |
+| `usePocketBaseMutation()` | SSR-safe create/update/delete |
+
+### Handler Functions Pattern
+
+For event handlers that need PocketBase, get a fresh instance:
+
+```tsx
+const handleSave = async () => {
+  const pb = getClient(); // Get fresh instance inside handler
+  await pb.collection("items").create({ name: "New Item" });
+};
+```
+
+## TanStack Router Quick Reference
+
+### Links
+```tsx
+import { Link } from "@tanstack/react-router"
+
+// Simple link
+<Link to="/dashboard">Dashboard</Link>
+
+// Link with params
+<Link to="/visits/$visitId" params={{ visitId: "123" }}>View Visit</Link>
+```
+
+### Navigation
+```tsx
+import { useNavigate } from "@tanstack/react-router"
+
+const navigate = useNavigate();
+
+// Simple navigation
+navigate({ to: "/dashboard" });
+
+// With params
+navigate({ to: "/visits/$visitId", params: { visitId: "123" } });
+
+// Replace history (no back button)
+navigate({ to: "/dashboard", replace: true });
+```
+
+### Route Params
+```tsx
+// In /routes/visits/$visitId.tsx
+const { visitId } = Route.useParams();
+```
+
+### Differences from Next.js
+
+| Next.js | TanStack Router |
+|---------|-----------------|
+| `useRouter().push("/path")` | `navigate({ to: "/path" })` |
+| `router.query.id` | `Route.useParams().id` |
+| `<Link href="/path">` | `<Link to="/path">` |
+| `NEXT_PUBLIC_*` | `VITE_PUBLIC_*` |
+| `process.env.*` | `import.meta.env.*` |
