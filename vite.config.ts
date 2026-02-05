@@ -5,7 +5,7 @@ import viteTsConfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  server: { port: 3000 },
+  server: { port: 3000, host: "0.0.0.0", allowedHosts: true },
   plugins: [
     viteTsConfigPaths(),
     tanstackStart({ target: "server" }),
